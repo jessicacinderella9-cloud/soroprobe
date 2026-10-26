@@ -16,6 +16,21 @@ You need Go, but **not** necessarily Go 1.25. The Stellar SDK requires it, and
 `GOTOOLCHAIN=auto` (Go's default since 1.21) will fetch the right toolchain
 automatically. If you have Go 1.21 or newer installed, `make` just works.
 
+### Or skip the local setup: use the dev container
+
+If you would rather not install anything, the repository ships a dev
+container (`.devcontainer/devcontainer.json`) for VS Code and GitHub
+Codespaces. Open the folder in a container (or start a Codespace) and you get
+Go 1.26 — the version CI installs — plus the same golangci-lint release CI
+runs, with nothing else to install:
+
+```bash
+make check   # gofmt, vet, tests — works the moment the container is up
+make lint    # golangci-lint, already present at the pinned version
+```
+
+SoroProbe needs no database, so the definition is a single container.
+
 Useful targets:
 
 | Target | Does |
@@ -159,7 +174,10 @@ version and the date verified. If field names moved, the compile will tell you.
 - One logical change per PR.
 - Include tests. Bug fixes should include a test that fails without the fix.
 - Update the README when you change user-visible behavior.
-- CI runs formatting, `go mod tidy` verification, vet, build and `go test -race`.
+- CI runs formatting, `go mod tidy` verification, vet, build and `go test -race`
+  on Linux, macOS and Windows (the Windows leg skips `-race`, which needs cgo
+  there).
+- No local toolchain? Use the dev container described under *Getting set up*.
 
 ## Reporting bugs
 
